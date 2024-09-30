@@ -1,0 +1,18 @@
+{
+  "name": "music_streaming_application",
+  "version": "1.0.0",
+  "description": "music streaming application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "nandhini",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "http-errors": "^2.0.0",
+    "mongoose": "^8.7.0"
+  }
+}
