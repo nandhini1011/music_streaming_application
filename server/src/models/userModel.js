@@ -34,7 +34,7 @@ const playlist = new Schema({
         type : String,
         required : true
     },
-    songs : [Schema.Types.ObjectId]
+    songs : [{ type: Schema.Types.ObjectId, ref: 'songs' }]
 })
 
 const user = new Schema({
@@ -53,7 +53,7 @@ const user = new Schema({
     },
     playlists : [playlist],
 
-    liked : [Schema.Types.ObjectId],
+    liked : [{ type: Schema.Types.ObjectId, ref: 'songs' }],
 
     userLibrary : [library]
 });

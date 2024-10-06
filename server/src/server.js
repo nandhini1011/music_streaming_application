@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 
 const createError = require("http-errors");
 
-// const userRoutes = require("./routes/userRoutes");
+const userRoutes = require("./routes/userRoutes");
 const songsRoutes = require("./routes/songsRoutes");
 
 const cors = require("cors");
@@ -24,11 +24,11 @@ const createServer = () => {
     );
 
     // Body-parser middleware
-    app.use(bodyParser.urlencoded({ extended: true }))
-    app.use(bodyParser.json())
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.json());
 
-    // app.use("/user", userRoutes);
     app.use("/songs",songsRoutes);
+    app.use("", userRoutes);
 
     app.use((req, res, next) => {
         next(createError.NotFound("This Route Does not Exist!"));

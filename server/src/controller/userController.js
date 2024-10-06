@@ -5,8 +5,10 @@ const users = require("../models/userModel");
 const getUserProfile = async (req, res) => {
     try{
         const {id} = req.params;
+        console.log(id);
         const user = await users.findById(id);
         res.status(200).json(user);
+        console.log(user);
     }catch(error){
         console.log(error.message);
         res.status(400).json({ error : error.message});
@@ -15,7 +17,7 @@ const getUserProfile = async (req, res) => {
 
 const createUser = async (req, res) => {
     try{
-        const newUser = new users(req.json);
+        const newUser = new users(req.body);
         response = await newUser.save();
         res.status(200).json(response);
         console.log("User Created!");
@@ -27,10 +29,10 @@ const createUser = async (req, res) => {
 
 const editUser = async (req, res) => {
     try{
-        const {userId} = req.params;
-        const user = await users.findByIdAndUpdate(userId, req.body);
+        const {id} = req.params;
+        const user = await users.findByIdAndUpdate(id, req.body);
         console.log("User Details Updated Sucessfully.!!");
-        res.status(200).json({"message" : "User Details Updated Sucessfully.!!"});
+        res.status(200).json({"messsage" : "User Details Updated Sucessfully.!! "});
     }catch(error){
         console.log(error.message);
         res.status(400).json({ error : error.message });
@@ -56,7 +58,11 @@ const likeSong = async (req, res) => {
         const song = req.body.songId;
         const user = await users.findById(userId);
         user.liked.push(song);
-        res.status(200).json({ "message" : "Added to Liked!!!"});
+        await user.save();
+        console.log("Added to Liked!!!");
+        res.status(200).json({
+            _id : userId,
+            Liked : user.liked });
     }catch(error){
         console.log(error.message);
         res.status(400).json({ error : error.message });
@@ -69,7 +75,11 @@ const createPlaylist = async (req, res) => {
         const playlistName = req.body.playlistName;
         const user = await users.findById(userId);
         user.playlists.push({ playlistName : playlistName });
-        res.status(200).json({ "message" : "Playlist Created.!!"});
+        await user.save();
+        res.status(200).json({ 
+            _id : userId,
+            playlists : user.playlists } );
+        console.log("Playlist Created.!!");
     }catch(error){
         console.log(error.message);
         res.status(400).json({ error : error.message });
@@ -81,14 +91,17 @@ const addSongToPlaylist = async (req, res) => {
         const userId = req.body.userId;
         const playlistId = req.body.playlistId;
         const songId = req.body.songId;
+        const playlist = user.playlists
         const user = await users.findByIdAndUpdate(userId, {
             $push : { "playlists.${playlist}.songs" : songId }
         },{ 
-            arrayFilters: [{ "playlist._id": playlistId }],
+            arrayFilters: { "playlist._id": playlistId },
             new: true
           });
-        consoole.log("Song added to playlist");
-        res.status(200).json({ message : "Song Added to the Playlist Sucessfully..!!!" })
+        console.log("Song added to playlist.!!");
+        res.status(200).json({ 
+            _id : userId,
+            playlists : user.playlists });
     }catch(error){
         console.log(error.message);
         res.status(400).json({ error : error.message });
@@ -98,8 +111,8 @@ const addSongToPlaylist = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     try{
-        const {userId} = req.params;
-        const user = users.findByIdAndDelete(userId);
+        const {id} = req.params;
+        const user = users.findByIdAndDelete(id);
         console.log("User Deleted.!");
         res.status(200).json({ "message" : "User Deleted Sucessfully.!" })
     }catch(error){

@@ -15,7 +15,8 @@ const getSong = async (req,res) => {
 
 const getAlbums = async (req, res) => {
     try{
-        albums = await songs.distinct(album);
+        albums = await songs.find().distinct("album");
+        console.log(albums);
         res.status(200).json(albums);
     }catch(error){
         console.log(error.message);
@@ -25,7 +26,7 @@ const getAlbums = async (req, res) => {
 
 const getArtists = async (req, res) => {
     try{
-        artists = await songs.distinct(artist);
+        artists = await songs.find().distinct("artist");
         res.status(200).json(artists);
     }catch(error){
         console.log(error.message);
@@ -35,7 +36,7 @@ const getArtists = async (req, res) => {
 
 const getComposers = async (req, res) => {
     try{
-        composers = await songs.distinct(composer);
+        composers = await songs.find().distinct("composer");
         res.status(200).json(composers);
     }catch(error){
         console.log(error.message);
@@ -45,7 +46,7 @@ const getComposers = async (req, res) => {
 
 const getGenre = async (req, res) => {
     try{
-        genres = await songs.distinct(genre);
+        genres = await songs.find().distinct("genre");
         res.status(200).json(genres);
     }catch(error){
         console.log(error.message);
@@ -55,7 +56,7 @@ const getGenre = async (req, res) => {
 
 const getLanguages = async (req, res) => {
     try{
-        languages = await songs.distinct(language);
+        languages = await songs.find().distinct("language");
         res.status(200).json(languages);
     }catch(error){
         console.log(error.message);

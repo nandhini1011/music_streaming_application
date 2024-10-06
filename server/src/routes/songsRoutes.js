@@ -15,8 +15,6 @@ const {
     getSongByLanguage   
 } = require("../controller/songsController");
 
-router.get("/:id", getSong);
-
 router.get("/album", getAlbums);
 
 router.get("/artist", getArtists);
@@ -33,8 +31,10 @@ router.get("/artist/:artistName" , getSongByArtist);
 
 router.get("/composer/:composerName", getSongByComposer);
 
-router.get("/genre/genreName", getSongByGenre);
+router.get("/genre/:genreName", getSongByGenre);
 
-router.get("/langeuage/langageName", getSongByLanguage);
+router.get("/language/:languageName", getSongByLanguage);
+
+router.get("/:id", getSong);
 
 module.exports = router;
